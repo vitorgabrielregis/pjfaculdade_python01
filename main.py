@@ -1,5 +1,5 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
+import requests
+from tkinter import *
 
 moedas = {
     "BRL": "Real Brasileiro",
@@ -51,3 +51,8 @@ def converter_moeda():
         messagebox.showerror("Erro", "Digite um número")
     except Exception as e:
         messagebox.showerror("Erro", f"Erro na conversão: {str(e)}") 
+
+janela = Tk ()
+janela.title ("Conversão de moedas")
+
+janela.mainloop()
