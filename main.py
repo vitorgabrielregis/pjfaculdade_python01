@@ -1,5 +1,7 @@
-import requests
-from tkinter import *
+import customtkinter as ctk
+from tkinter import messagebox
+
+ctk.set_appearance_mode("System")
 
 moedas = {
     "BRL": "Real Brasileiro",
@@ -52,7 +54,8 @@ def converter_moeda():
     except Exception as e:
         messagebox.showerror("Erro", f"Erro na conversão: {str(e)}") 
 
-janela = Tk ()
-janela.title ("Conversão de moedas")
+janela = ctk.CTk()
+janela.title("Conversor de Moedas")
+janela.geometry("400x400")
 
 janela.mainloop()
