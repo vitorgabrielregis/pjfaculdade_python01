@@ -54,8 +54,42 @@ def converter_moeda():
     except Exception as e:
         messagebox.showerror("Erro", f"Erro na conversão: {str(e)}") 
 
+def trocar_moedas():
+    origem = var_moeda_origem.get()
+    destino = var_moeda_destino.get()
+    var_moeda_origem.set(destino)
+    var_moeda_destino.set(origem)
+    if entrada_valor.get():
+        converter_moeda()
+
+def validar_valor(novo_valor):
+    if novo_valor == "":
+        return True
+    if novo_valor.count(".") > 1:
+        return False
+    try:
+#Serve para verificar se a string termina com "." auxiliando na conversão evitando erros, contendo que seja escrito um número
+        float(novo_valor + "0") if novo_valor.endswith(".") else float(novo_valor)
+        return True
+    except ValueError:
+        return False
+    
+def limpar_campos():
+    entrada_valor.delete(0, ctk.END)
+    var_resultado.set("")
+    var_taxa.set("")
+    var_moeda_origem.set("BRL")
+    var_moeda_destino.set("USD")
+
+def ao_apertar_enter(event):#event serve para reagir com o usuário 
+    converter_moeda()
+
 janela = ctk.CTk()
 janela.title("Conversor de Moedas")
 janela.geometry("400x400")
+
+#Redimensionar  tanto na horizontal como vertical
+janela.resizable(True, True)
+janela.configure(bg="#fff")
 
 janela.mainloop()
