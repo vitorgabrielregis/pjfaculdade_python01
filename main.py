@@ -28,7 +28,7 @@ taxas_cambio = {
 def converter_moeda():
     try:
         valor = float(entrada_valor.get())
-        moeda_origem = valor_moeda_origem.get()
+        moeda_origem = var_moeda_origem.get() 
         moeda_destino = var_moeda_destino.get()
 
         if moeda_origem not in taxas_cambio or moeda_destino not in taxas_cambio:
@@ -86,10 +86,35 @@ def ao_apertar_enter(event):#event serve para reagir com o usuário
 
 janela = ctk.CTk()
 janela.title("Conversor de Moedas")
-janela.geometry("400x400")
+janela.geometry("400x460")
+janela.resizable(False, False)
 
-#Redimensionar  tanto na horizontal como vertical
-janela.resizable(True, True)
-janela.configure(bg="#fff")
+var_moeda_origem = ctk.StringVar(value="BRL")
+var_moeda_destino = ctk.StringVar(value="USD")
+var_resultado = ctk.StringVar()
+var_taxa = ctk.StringVar()
+
+validar_cmd = janela.register(validar_valor)
+
+
+ctk.CTkLabel(janela, text="Valor:", font=("Arial", 14)).pack(pady=5)
+entrada_valor = ctk.CTkEntry(janela, validate="key", validatecommand=(validar_cmd, "%P"))
+entrada_valor.pack(pady=5)
+
+ctk.CTkLabel(janela, text="Moeda de origem:", font=("Arial", 14)).pack(pady=5)
+ctk.CTkOptionMenu(janela, variable=var_moeda_origem, values=list(moedas.keys())).pack(pady=5)
+
+ctk.CTkLabel(janela, text="Moeda de destino:", font=("Arial", 14)).pack(pady=5)
+ctk.CTkOptionMenu(janela, variable=var_moeda_destino, values=list(moedas.keys())).pack(pady=5)
+
+ctk.CTkButton(janela, text="Converter", command=converter_moeda).pack(pady=10)
+ctk.CTkButton(janela, text="Trocar Moedas", command=trocar_moedas).pack(pady=5)
+ctk.CTkButton(janela, text="Limpar", command=limpar_campos).pack(pady=5)
+
+ctk.CTkLabel(janela, text="Resultado:", font=("Arial", 14)).pack(pady=5)
+ctk.CTkLabel(janela, textvariable=var_resultado, font=("Arial", 16, "bold")).pack(pady=2)
+ctk.CTkLabel(janela, textvariable=var_taxa, font=("Arial", 12)).pack(pady=2)
+
+janela.bind("<Return>", ao_apertar_enter)
 
 janela.mainloop()
