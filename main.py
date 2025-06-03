@@ -2,6 +2,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 
 ctk.set_appearance_mode("System")
+ctk.set_default_color_theme("blue")  
 
 moedas = {
     "BRL": "Real Brasileiro",
@@ -16,15 +17,20 @@ moedas = {
 
 taxas_cambio = {
     "BRL": 1.0,
-    "USD": 5.67,
-    "EUR": 6.25,
-    "CAD": 4.00,
-    "AUD": 3.63,
-    "CHF": 6.49,
-    "JPY": 0.0385,
-    "CNY": 0.779
+    "USD": 0.1764,  
+    "EUR": 0.16,
+    "CAD": 0.25,
+    "AUD": 0.2755,
+    "CHF": 0.1541,
+    "JPY": 25.97,
+    "CNY": 1.2837
 }
 
+def alterar_tema():
+    atual = ctk.get_appearance_mode()
+    novo = "Light" if atual == "Dark" else "Dark"
+    ctk.set_appearance_mode(novo)
+    
 def converter_moeda():
     try:
         valor = float(entrada_valor.get())
@@ -38,11 +44,10 @@ def converter_moeda():
             messagebox.showerror("Erro", "Digite um valor positivo")
             return
         
-        valor_usd = valor / taxas_cambio[moeda_origem]
-        valor_convertido = valor_usd * taxas_cambio[moeda_destino]
+        valor_convertido = valor * taxas_cambio[moeda_destino] / taxas_cambio[moeda_origem]
 
         if moeda_destino in ["BRL", "USD", "EUR"]:
-            resultado_formatado = f"{round(valor_convertido): .0f}"
+            resultado_formatado = f"{round(valor_convertido):.0f}"
         else:
             resultado_formatado = f"{round(valor_convertido, 2): .2f}"
 
@@ -86,8 +91,7 @@ def ao_apertar_enter(event):#event serve para reagir com o usuário
 
 janela = ctk.CTk()
 janela.title("Conversor de Moedas")
-janela.geometry("400x460")
-janela.resizable(False, False)
+janela.geometry("500x460")
 
 var_moeda_origem = ctk.StringVar(value="BRL")
 var_moeda_destino = ctk.StringVar(value="USD")
@@ -96,6 +100,7 @@ var_taxa = ctk.StringVar()
 
 validar_cmd = janela.register(validar_valor)
 
+ctk.CTkButton(janela, text="Novo Tema", command=alterar_tema).pack(pady=5)
 
 ctk.CTkLabel(janela, text="Valor:", font=("Arial", 14)).pack(pady=5)
 entrada_valor = ctk.CTkEntry(janela, validate="key", validatecommand=(validar_cmd, "%P"))
